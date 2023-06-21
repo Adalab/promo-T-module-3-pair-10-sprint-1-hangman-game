@@ -1,8 +1,27 @@
 import '../styles/App.scss';
 import { useState } from 'react';
+
 function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
+  const [lastLetter, setLastLetter] = useState('');
+
+
+
   const handleClick = () => setNumberOfErrors(numberOfErrors + 1);
+  const handleOnSubmit = (ev) => {
+    ev.preventDefault();
+  };
+
+  const handleChangeLetter = (ev) => {
+    const lastInput = ev.target.value;
+    let regex = /^[a-zA-ZñÑá-úÁ-Ú´]$/;
+    let isValidLetter = regex.test(lastInput);
+    console.log(isValidLetter);
+    if (isValidLetter || lastInput === '') {
+      setLastLetter(lastInput);
+    }  
+  };
+
   return (
     <div className='page'>
       <header>
@@ -35,7 +54,7 @@ function App() {
               <li className='letter'>x</li>
             </ul>
           </div>
-          <form className='form'>
+          <form onSubmit={handleOnSubmit} className='form'>
             <label className='title' htmlFor='last-letter'>
               Escribe una letra:
             </label>
@@ -46,6 +65,8 @@ function App() {
               type='text'
               name='last-letter'
               id='last-letter'
+              value={lastLetter}
+              onChange={handleChangeLetter}
             />
           </form>
         </section>
