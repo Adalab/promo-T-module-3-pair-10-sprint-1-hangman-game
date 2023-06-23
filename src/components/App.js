@@ -5,6 +5,9 @@ function App() {
   const [numberOfErrors, setNumberOfErrors] = useState(0);
   const [lastLetter, setLastLetter] = useState('');
   const [word, setWord] = useState('katacroker');
+  const [userLetters, setUserLetters] = useState([]);
+
+
   const handleClick = () => setNumberOfErrors(numberOfErrors + 1);
   const handleOnSubmit = (ev) => {
     ev.preventDefault();
@@ -14,15 +17,18 @@ function App() {
     const lastInput = ev.target.value;
     let regex = /^[a-zA-ZñÑá-úÁ-Ú´]$/;
     let isValidLetter = regex.test(lastInput);
-    console.log(isValidLetter);
+  
     if (isValidLetter || lastInput === '') {
       setLastLetter(lastInput);
+      if (lastInput !== '') {
+        setUserLetters([...userLetters, lastInput]);
+      }
     }
   };
   const renderSolutionLetters = () => {
     const wordLetters = word.split('');
-    return wordLetters.map((letter) => {
-      return <li className='letter'>{letter}</li>;
+    return wordLetters.map((letter, index) => {
+        return <li key={index} className='letter'>{letter}</li>;    
     });
   };
   return (
@@ -34,7 +40,7 @@ function App() {
         <section>
           <div className='solution'>
             <h2 className='title'>Solución:</h2>
-            <ul className='letters' key={setWord}>
+            <ul className='letters'>
               {renderSolutionLetters()}
             </ul>
           </div>
